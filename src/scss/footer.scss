@@ -1,0 +1,19 @@
+.footer {
+    margin-top: rem(16);
+    @include adaptiveValue("margin-bottom", 40, 20);
+    &__container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: rem(20);
+        padding: 0px rem(25);
+    }
+
+    &__item {
+        font-family: "Roboto";
+        font-size: rem(11);
+        line-height: math.div(13, 11);
+        text-decoration-line: underline;
+        color: $c_secondary_02;
+    }
+}

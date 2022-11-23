@@ -1,0 +1,28 @@
+.header {
+    @include adaptiveValue("margin-top", 40, 20);
+    margin-bottom: rem(16);
+    &__container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: rem(20);
+        a {
+            text-decoration: none;
+        }
+    }
+
+    &__close {
+        flex: 0 0 rem(24);
+        img {
+            max-width: 100%;
+        }
+    }
+
+    &__item {
+        font-family: "SFProText";
+        font-size: rem(13);
+        line-height: math.div(41, 13);
+        letter-spacing: em(-0.22, 13);
+        color: $c_text_03;
+    }
+}
