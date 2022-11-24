@@ -1,6 +1,9 @@
 .header {
     @include adaptiveValue("margin-top", 40, 20);
     margin-bottom: rem(16);
+    @media (max-height: em(375)) {
+        margin-top: rem(20);
+    }
     &__container {
         display: flex;
         align-items: center;

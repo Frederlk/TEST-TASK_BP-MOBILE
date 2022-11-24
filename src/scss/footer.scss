@@ -1,6 +1,9 @@
 .footer {
     margin-top: rem(16);
     @include adaptiveValue("margin-bottom", 40, 20);
+    @media (max-height: em(375)) {
+        margin-bottom: rem(20);
+    }
     &__container {
         display: flex;
         align-items: center;
@@ -15,5 +18,9 @@
         line-height: math.div(13, 11);
         text-decoration-line: underline;
         color: $c_secondary_02;
+        .ru &,
+        .fr & {
+            font-size: rem(10);
+        }
     }
 }

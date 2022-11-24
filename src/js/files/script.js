@@ -1,61 +1,72 @@
-function changeLanguage() {
-    const langArr = ["en", "ru", "es", "fr", "ja", "nl", "zh"];
+try {
+    function changeLanguage() {
+        const langArr = ["en", "ru", "es", "fr", "ja", "nl", "zh"];
 
-    const userLocale =
-        navigator.languages && navigator.languages.length
-            ? navigator.languages[0].slice(0, 2)
-            : navigator.language;
+        const userLocale =
+            navigator.languages && navigator.languages.length
+                ? navigator.languages[0].slice(0, 2)
+                : navigator.language;
 
-    const params = new Proxy(new URLSearchParams(window.location.search), {
-        get: (searchParams, prop) => searchParams.get(prop),
-    });
-    let querylang = params.lang;
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        });
+        let querylang = params.lang;
 
-    if (!querylang && userLocale === "en") {
-        return null;
+        if (!querylang && userLocale === "en") {
+            return null;
+        }
+
+        const doc = document.documentElement;
+
+        const setLanguage = () => {
+            if (langArr.includes(querylang)) {
+                doc.lang = querylang;
+                return querylang;
+            } else if (langArr.includes(userLocale)) {
+                doc.lang = userLocale;
+                return userLocale;
+            } else {
+                return "en";
+            }
+        };
+
+        const language = setLanguage();
+
+        const getLocale = async () => {
+            const file = `files/locales/${language}.json`;
+            let response = await fetch(file, {
+                method: "GET",
+            });
+            if (response.ok) {
+                const data = await response.json();
+                translate(data);
+            } else {
+                alert("Error!");
+            }
+        };
+
+        const translate = async (data) => {
+            const valueArr = Object.values(data);
+            const translateElems = document.querySelectorAll("[data-lang]");
+
+            translateElems.forEach((item) => {
+                const number = item.dataset.lang;
+                item.innerHTML = valueArr[number];
+            });
+        };
+
+        getLocale();
+
+        window.history.pushState({}, "", "?lang=" + language);
+
+        doc.lang = language;
+        doc.classList.add(language);
     }
 
-    const doc = document.documentElement;
-
-    const setLanguage = () => {
-        if (langArr.includes(querylang)) {
-            doc.lang = querylang;
-            return querylang;
-        } else if (langArr.includes(userLocale)) {
-            doc.lang = userLocale;
-            return userLocale;
-        } else {
-            return "en";
-        }
-    };
-
-    const language = setLanguage();
-
-    const getLocale = import(`../../localizations/${language}.json`, { assert: { type: "json" } }).then(
-        (res) => res.default
-    );
-
-    const translate = async () => {
-        const data = await getLocale;
-
-        const valueArr = Object.values(data);
-        const translateElems = document.querySelectorAll("[data-lang]");
-
-        translateElems.forEach((item, i) => {
-            const number = item.dataset.lang;
-            item.innerHTML = valueArr[number];
-        });
-    };
-
-    window.history.pushState({}, "", "?lang=" + language);
-
-    translate();
-
-    doc.lang = language;
-    doc.classList.add(language);
+    changeLanguage();
+} catch (error) {
+    console.log(error);
 }
-
-changeLanguage();
 
 //========================================================================================================================================================
 

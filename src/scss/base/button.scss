@@ -17,6 +17,11 @@
         }
     }
 
+    &:active {
+        transition: box-shadow 0s ease 0s;
+        box-shadow: 0px 0px rem(10) $c_primary_02;
+    }
+
     @media (max-height: em(700)) {
         height: rem(44);
     }
